@@ -1,26 +1,47 @@
-import { Button } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
-import { formatDate } from '../utils/helpers';
-
+import { Table } from 'antd';
 const LeaderBoard = (props) => {
-  const { question } = props;
-
+  const {leaderboard} = props;
+  const dataSource =props.leaderboard;;
+  
+  const columns = [
+    {
+      title: 'Users',
+      dataIndex: 'user',
+      key: 'user',
+    },
+    {
+      title: 'Answered',
+      dataIndex: 'answered',
+      key: 'answered',
+    },
+    {
+      title: 'Created',
+      dataIndex: 'created',
+      key: 'created',
+    },
+  ];
+  
   return (
-    <div className="question" style={{  border: '1px solid grey', padding: '10px', margin: '10px' }}>
-      <h2 style={{ color: 'blue' }}>{question.author}</h2>
-      <p style={{ fontStyle: 'italic' }}>{formatDate(question.timestamp)}</p>
-      <Button style={{ backgroundColor: 'green', color: 'white', padding: '5px 10px', border: 'none' }}>Show</Button>
-    </div>
+   <div className="leaderboard">
+    <Table dataSource={dataSource} columns={columns} />;
+   </div>
   );
 };
 
-const mapStateToProps = ({questions}, { id }) => {
-  const question = questions[id];
+const mapStateToProps = ({users}) => {
+  const leaderboard = Object.values(users).map((user) => {
+    return {
+      user: user.id,
+      answered: Object.keys(user.answers).length,
+      created: user.questions.length,
+    };
+  });
+  console.log(leaderboard);
 
-  return {
-    question
-  };
+  return  {
+    leaderboard};
 };
 
 export default connect(mapStateToProps)(LeaderBoard);

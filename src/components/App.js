@@ -5,7 +5,9 @@ import Home from "./Home";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
 import Nav from "./Nav";
-import Question from "./Question";
+import LeaderBoard from "./LeaderBoard";
+import NewQuestion from "./NewQuestion";
+import QuestionDetail from "./QuestionDetail";
 
 const App = (props) => {
   useEffect(() => {
@@ -19,12 +21,10 @@ const App = (props) => {
           <div>
             <Nav />
             <Routes>
-
               <Route path="/" exact element={<Home />} />
-              {/* <Route path="/leaderboard" exact element={<Leaderboard />} /> */}
-              <Route path="/question/:id" element={<Question />} />
-              {/* <Route path="/new" element={<NewQuestion />} /> */}
-
+              <Route path="/leaderboard" exact element={<LeaderBoard />} /> 
+              <Route path="/question/:id" element={<QuestionDetail />} />
+              <Route path="/new" element={<NewQuestion />} /> 
             </Routes>
           </div>)}
       </div>

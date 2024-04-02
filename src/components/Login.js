@@ -15,7 +15,7 @@ const Login = (props) => {
     }
 
     return (
-        <div style={{ marginLeft: '50px', textAlign: 'center' }}>
+        <div style={{ marginLeft: '50px', textAlign: 'center', marginRight: '50px' }}>
             <h1>Login</h1>
             <Form onFinish={onFinish}
                 layout='vertical'

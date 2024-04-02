@@ -20,6 +20,7 @@ const Home = (props) => {
                 </ol>
 
             </div>
+            <br />
             <div className="question-section">
                 <h2 className="question-type">Done</h2>
 
