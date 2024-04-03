@@ -11,7 +11,7 @@ const Home = (props) => {
 
                 <ol className="question-grid">
                 {
-                    props.questionIdsDone.map((id) => (
+                    props.questionIdsNew.map((id) => (
                         <li key={id}>
                            <Question id={id} />
                         </li>
@@ -26,7 +26,7 @@ const Home = (props) => {
 
                 <ol className="question-grid">
                 {
-                    props.questionIdsNew.map((id) => (
+                    props.questionIdsDone.map((id) => (
                         <li key={id}>
                            <Question id={id} />
                         </li>

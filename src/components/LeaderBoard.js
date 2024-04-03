@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 const LeaderBoard = (props) => {
   const {leaderboard} = props;
-  const dataSource =props.leaderboard;;
+  const dataSource =props.leaderboard;
   
   const columns = [
-    {
+    {      
       title: 'Users',
       dataIndex: 'user',
       key: 'user',
@@ -31,8 +31,10 @@ const LeaderBoard = (props) => {
 };
 
 const mapStateToProps = ({users}) => {
-  const leaderboard = Object.values(users).map((user) => {
+  const leaderboard = Object.values(users).map((user,index) => {
+    console.log(index);
     return {
+      key: index,
       user: user.id,
       answered: Object.keys(user.answers).length,
       created: user.questions.length,

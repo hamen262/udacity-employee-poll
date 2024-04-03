@@ -4,13 +4,18 @@ export function formatDate (timestamp) {
   return time.substr(0, 5) + time.slice(-2) + ' | ' + d.toLocaleDateString()
 }
 
-export function formatQuestion (question, authedUser, author, parentQuestion = null) {
-  const { id, } = question
-  const { name, avatarURL } = author
 
+export function formatQuestion ({ optionOneText, optionTwoText, author }) {
   return {
-    name,
-    id,
-   
+    timestamp: formatDate(Date.now()),
+    author,
+    optionOne: {
+      votes: [],
+      text: optionOneText,
+    },
+    optionTwo: {
+      votes: [],
+      text: optionTwoText,
+    }
   }
 }

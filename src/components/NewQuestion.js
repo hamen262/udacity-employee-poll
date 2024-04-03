@@ -2,12 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import {  handleAddQuestion } from '../actions/questions';
 
 const NewQuestion = (props) => {
     const navigate = useNavigate();
-    const { questions } = props;
+    
     const onFinish = (values) => {
-        console.log('Received values:', values);
+    props.dispatch(handleAddQuestion({
+            optionOneText: values.optionOne,
+            optionTwoText: values.optionTwo,
+            author: props.id
+        }))
+
         navigate('/');
      }
 
@@ -51,10 +57,10 @@ const NewQuestion = (props) => {
     );
 };
 
-const mapStateToProps = ({ questions,authedUser }) => {
+const mapStateToProps = ({ authedUser }) => {
 
     return {
-        questions
+        id: authedUser.id
     };
 };
 
