@@ -5,7 +5,6 @@ import { setAuthedUser } from '../actions/authedUser';
 
 const Login = (props) => {
     const onFinish = (values) => {
-        console.log('Received values:', values);
         Object.entries(props.users).map(([key, value]) => {
             if (key === values.username && value.password === values.password) {
                 return props.dispatch(setAuthedUser(value));

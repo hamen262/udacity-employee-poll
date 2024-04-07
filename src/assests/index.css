@@ -139,3 +139,7 @@ code {
 	flex-wrap: nowrap;
 	justify-content: space-around;
 }
+
+.percentage {
+	font-size: 20px;
+}

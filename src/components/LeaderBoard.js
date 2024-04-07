@@ -32,7 +32,6 @@ const LeaderBoard = (props) => {
 
 const mapStateToProps = ({users}) => {
   const leaderboard = Object.values(users).map((user,index) => {
-    console.log(index);
     return {
       key: index,
       user: user.id,
@@ -40,7 +39,6 @@ const mapStateToProps = ({users}) => {
       created: user.questions.length,
     };
   });
-  console.log(leaderboard);
 
   return  {
     leaderboard};

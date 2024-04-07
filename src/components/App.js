@@ -12,7 +12,7 @@ import QuestionDetail from "./QuestionDetail";
 const App = (props) => {
   useEffect(() => {
     props.dispatch(handleInitialData());
-  }, []);
+  }, [props]);
 
   return (
     <Fragment>

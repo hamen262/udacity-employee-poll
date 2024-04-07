@@ -41,8 +41,9 @@ const Home = (props) => {
 
 
 };
-const mapStateToProps = ({ questions, authedUser }) => {
-     var questionIdDone = Object.keys(authedUser.answers);
+const mapStateToProps = ({ questions, authedUser, users }) => {
+
+     var questionIdDone = Object.keys(users[authedUser.id].answers);
 
     return {
         questionIdsDone: Object.keys(questions).filter((id) => questionIdDone.includes(id)).sort((a, b) => questions[b].timestamp - questions[a].timestamp),

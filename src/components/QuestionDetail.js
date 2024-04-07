@@ -2,55 +2,73 @@ import { Button } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Form, Input } from 'antd';
-
+import { handleAddQuestionAnwser } from '../actions/questions';
+import { useState, useEffect } from 'react';
 const withRouter = (Component) => {
     const ComponentWithRouterProp = (props) => {
-      let location = useLocation();
-      let navigate = useNavigate();
-      let params = useParams();
-      return <Component {...props} router={{ location, navigate, params }} />;
+        let location = useLocation();
+        let navigate = useNavigate();
+        let params = useParams();
+        return <Component {...props} router={{ location, navigate, params }} />;
     };
-  
+
     return ComponentWithRouterProp;
-  };
-const QuestionDetail = (props) => {
-
-const addAnswer = (option) => {
-    console.log('addAnswer');
-
 };
+
+
+const QuestionDetail = (props) => {
+    const [percentage, setPercentage] = useState(0);
+    const [display, setDisplay] = useState(false);
+    const [option, setOption] = useState(1);
+
+    const addAnswer = (option) => {
+        if (option === 1) {
+            setOption(1);
+            props.dispatch(handleAddQuestionAnwser({ qid: props.question.id, answer: 'optionOne' }))
+        } else {
+            setOption(2);
+            props.dispatch(handleAddQuestionAnwser({ qid: props.question.id, answer: 'optionTwo' }))
+        }
+    };
+
+    useEffect(() => {
+        if (props.question) {
+          const optionOne = props.question.optionOne.votes.length;
+          const optionTwo = props.question.optionTwo.votes.length;
+          const totalVotes = optionOne + optionTwo;
+          const newPercentage = totalVotes === 0 ? 0 : option===1 ? (optionOne / totalVotes) * 100: (optionTwo / totalVotes) * 100;
+    
+          setPercentage(newPercentage);
+          setDisplay(true);
+        }
+      }, [props.question, option]);
     return (
         <div className="new-question">
             <div className="header-question">
                 <h1>Would you rather</h1>
             </div>
             <div className="body-question">
-            <div className="question-name">
-            <div>{props.question.optionOne.text}</div>
-            <Button type="primary" onClick={addAnswer(1)}>click</Button>
-            </div>
-            <div className="question-name">
-            <div>{props.question.optionTwo.text}</div>
-            <Button type="primary"   onClick={addAnswer(2)}>click</Button></div>
+                <div className="question-name">
+                    <div>{props.question.optionOne.text}</div>
+                    <Button type="primary" onClick={() => addAnswer(1)}>click</Button>
+                </div>
+                <div className="question-name">
+                    <div>{props.question.optionTwo.text}</div>
+                    <Button type="primary" onClick={() => addAnswer(2)}>click</Button></div>
             </div>
 
-            <div >Percentage of the option: {props.percentage}</div>
-
-      
+            {display && (<div className='percentage'>Pergentage of your choice: {percentage}</div>)}
         </div>
     );
 };
 
-const mapStateToProps = ({ questions },props) => {
-const id= props.router.params.id;
-const question =  questions[id];
-
-console.log('question',question);
+const mapStateToProps = ({ questions }, props) => {
+    const id = props.router.params.id;
+    const question = questions[id];
     return {
-       question,
-       percentage: question.optionOne.votes.length/(question.optionOne.votes.length+question.optionTwo.votes.length) 
+        question
     };
 };
 
-export default  withRouter(connect(mapStateToProps)(QuestionDetail));
+
+export default withRouter(connect(mapStateToProps)(QuestionDetail));
