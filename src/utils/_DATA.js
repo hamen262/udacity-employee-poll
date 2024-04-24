@@ -30,8 +30,7 @@ let users = {
     avatarURL: '../../images/leaf.jpg',
     answers: {
       "xj352vofupe1dqz9emx13r": 'optionOne',
-      "vthrdm985a262al8qx3do": 'optionTwo',
-      "6ni6ok3ym7mf1p33lnez": 'optionOne'
+      "vthrdm985a262al8qx3do": 'optionTwo'
     },
     questions: ['6ni6ok3ym7mf1p33lnez', 'xj352vofupe1dqz9emx13r'],
   }
@@ -118,23 +117,23 @@ let questions = {
   },
 }
 
-function generateUID () {
+function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
-export function _getUsers () {
+export function _getUsers() {
   return new Promise((res, rej) => {
-    setTimeout(() => res({...users}), 1000)
+    setTimeout(() => res({ ...users }), 1000)
   })
 }
 
-export function _getQuestions () {
+export function _getQuestions() {
   return new Promise((res, rej) => {
-    setTimeout(() => res({...questions}), 1000)
+    setTimeout(() => res({ ...questions }), 1000)
   })
 }
 
-function formatQuestion ({ optionOneText, optionTwoText, author }) {
+function formatQuestion({ optionOneText, optionTwoText, author }) {
   return {
     id: generateUID(),
     timestamp: Date.now(),
@@ -150,8 +149,12 @@ function formatQuestion ({ optionOneText, optionTwoText, author }) {
   }
 }
 
-export function _saveQuestion (question) {
+export function _saveQuestion(question) {
+
   return new Promise((res, rej) => {
+    if (!question.author) {
+      rej('Author is required')
+    } else {
     const authedUser = question.author;
     const formattedQuestion = formatQuestion(question)
 
@@ -160,7 +163,7 @@ export function _saveQuestion (question) {
         ...questions,
         [formattedQuestion.id]: formattedQuestion
       }
-      
+
       users = {
         ...users,
         [authedUser]: {
@@ -171,11 +174,15 @@ export function _saveQuestion (question) {
 
       res(formattedQuestion)
     }, 1000)
-  })
+  }})
 }
 
-export function _saveQuestionAnswer ({ authedUser, qid, answer }) {
+export function _saveQuestionAnswer({ authedUser, qid, answer }) {
   return new Promise((res, rej) => {
+   if(users[authedUser].answers[qid]){
+      rej('You already answered this question')
+   } else {
+    
     setTimeout(() => {
       users = {
         ...users,
@@ -199,7 +206,10 @@ export function _saveQuestionAnswer ({ authedUser, qid, answer }) {
         }
       }
 
-      res()
+      res('save success')
     }, 500)
+    
+   }
+
   })
 }

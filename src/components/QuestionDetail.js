@@ -20,14 +20,23 @@ const QuestionDetail = (props) => {
     const [percentage, setPercentage] = useState(0);
     const [display, setDisplay] = useState(false);
     const [option, setOption] = useState(1);
+    const [message, setMessage] = useState(null);
 
     const addAnswer = (option) => {
+        setMessage(null);
         if (option === 1) {
-            setOption(1);
-            props.dispatch(handleAddQuestionAnwser({ qid: props.question.id, answer: 'optionOne' }))
+          
+            props.dispatch(handleAddQuestionAnwser({ qid: props.question.id, answer: 'optionOne' })).then(() => {
+                setOption(1);                
+            }).catch(() => {
+                setMessage('You already voted for this question');
+            })
         } else {
-            setOption(2);
-            props.dispatch(handleAddQuestionAnwser({ qid: props.question.id, answer: 'optionTwo' }))
+            props.dispatch(handleAddQuestionAnwser({ qid: props.question.id, answer: 'optionTwo' })).then(() => {
+                setOption(2);                
+            }).catch(() => {
+                setMessage('You already voted for this question');
+            })
         }
     };
 
@@ -58,6 +67,7 @@ const QuestionDetail = (props) => {
             </div>
 
             {display && (<div className='percentage'>Pergentage of your choice: {percentage}</div>)}
+            {message && (<div className='message-error'>{message}</div>)}
         </div>
     );
 };

@@ -8,8 +8,10 @@ import Nav from "./Nav";
 import LeaderBoard from "./LeaderBoard";
 import NewQuestion from "./NewQuestion";
 import QuestionDetail from "./QuestionDetail";
+import { useLocation } from "react-router-dom";
 
 const App = (props) => {
+  const location = useLocation();
   useEffect(() => {
     props.dispatch(handleInitialData());
   }, [props]);
@@ -17,7 +19,7 @@ const App = (props) => {
   return (
     <Fragment>
       <div className="container">
-        {props.authedUser === true ? <Login /> : (
+        {props.authedUser === true ? <Login replace state={{ path: location.pathname }} /> : (
           <div>
             <Nav />
             <Routes>

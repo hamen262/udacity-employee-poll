@@ -2,14 +2,19 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { connect } from 'react-redux';
 import { setAuthedUser } from '../actions/authedUser';
+import { useState } from 'react';
 
 const Login = (props) => {
+    const [error,setError] = useState(null);
     const onFinish = (values) => {
-        Object.entries(props.users).map(([key, value]) => {
-            if (key === values.username && value.password === values.password) {
-                return props.dispatch(setAuthedUser(value));
-            }
-        });
+        const user = Object.values(props.users).find(user => user.id === values.username && user.password === values.password);
+        if (user) {
+            console.log(user.id);
+            props.dispatch(setAuthedUser(user));
+            setError(null);
+        } else {
+            setError('Login fail! Please check your username and password!');
+        }
         
     }
 
@@ -41,6 +46,8 @@ const Login = (props) => {
                     </Button>
                 </Form.Item>
             </Form>
+
+            {error && (<div >{error}</div>)}
         </div>
     );
 };

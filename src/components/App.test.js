@@ -8,12 +8,19 @@ import reducer from "../reducers";
 import middleware from "../middleware";
 import { configureStore } from "@reduxjs/toolkit";
 
+jest.mock('antd', () => {
+    const antd = jest.requireActual('antd');
+    return {
+      ...antd
+    };
+  });
+
 const store = configureStore({
   reducer,
   middleware: () => [...middleware],
 });
 
-test("renders login page", () => {
+test("render first look of login page", () => {
   const { asFragment } = render(
   
       <Provider store={store}>
