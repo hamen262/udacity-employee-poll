@@ -27,6 +27,7 @@ const Login = (props) => {
                 <Form.Item
                     label="User"
                     name="username"
+                    data-testid = "username"
                     rules={[{ required: true, message: 'Please input your username!' }]}
                 >
                     <Input />
@@ -35,19 +36,20 @@ const Login = (props) => {
                 <Form.Item
                     label="Password"
                     name="password"
+                    data-testid = "password"
                     rules={[{ required: true, message: 'Please input your password!' }]}
                 >
                     <Input.Password />
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" data-testid= "submit">
                         Submit
                     </Button>
                 </Form.Item>
             </Form>
 
-            {error && (<div >{error}</div>)}
+            {error && (<div data-testid="error">{error}</div>)}
         </div>
     );
 };

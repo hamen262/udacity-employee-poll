@@ -1,3 +1,16 @@
+import React from "react";
+import { render,getByTestId,fireEvent ,waitFor, queryByTestId } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import App from "./App";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
+import reducer from "../reducers";
+import middleware from "../middleware";
+import { configureStore } from "@reduxjs/toolkit";
+import Login from "./Login";
+import { Fragment } from "react";
+
+
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
     return {
@@ -5,65 +18,78 @@ jest.mock('antd', () => {
     };
   });
 
-  describe('Login', () => {
-    it('should render correctly', () => {
-      const { Form, Input, Button } = require('antd');
-      const { useState } = require('react');
-      const { setAuthedUser } = require('../actions/authedUser');
-      const { Login } = require('../components/Login');
   
-      const props = {
-        users: {
-          'user1': {
-            id: 'user1',
-            password: 'password1'
-          }
-        },
-        dispatch: jest.fn()
-      };
+
+const store = configureStore({
+  reducer,
+  middleware: () => [...middleware],
+});
+describe('store', () => {
+  test("should render login page correctly", () => {
+    var component  = render(
+    
+        <Provider store={store}>
+          <Router>
+          <Fragment>
+            <Login />
+        </Fragment>
+            </Router>
+          </Provider>
+    );
   
-      const wrapper = shallow(<Login {...props} />);
-      expect(wrapper.find(Form)).toHaveLength(1);
-      expect(wrapper.find(Input)).toHaveLength(2);
-      expect(wrapper.find(Button)).toHaveLength(1);
-    });
   
-    it('should call setAuthedUser when form is submitted', () => {
-      const { Form } = require('antd');
-      const { setAuthedUser } = require('../actions/authedUser');
-      const { Login } = require('../components/Login');
-  
-      const props = {
-        users: {
-          'user1': {
-            id: 'user1',
-            password: 'password1'
-          }
-        },
-        dispatch: jest.fn()
-      };
-  
-      const wrapper = shallow(<Login {...props} />);
-      wrapper.find(Form).simulate('finish', { username: 'user1', password: 'password1' });
-      expect(setAuthedUser).toHaveBeenCalledWith({ id: 'user1', password: 'password1' });
-    });
-  
-    it('should show error message when login fails', () => {
-      const { Form } = require('antd');
-      const { Login } = require('../components/Login');
-  
-      const props = {
-        users: {
-          'user1': {
-            id: 'user1',
-            password: 'password1'
-          }
-        },
-        dispatch: jest.fn()
-      };
-  
-      const wrapper = shallow(<Login {...props} />);
-      wrapper.find(Form).simulate('finish', { username: 'user1', password: 'wrongpassword' });
-      expect(wrapper.find('.error')).toHaveLength(1);
-    });
+    expect(component.getByTestId('username')).toBeInTheDocument();
+    expect(component.getByTestId('password')).toBeInTheDocument();
+    expect(component.getByTestId('submit')).toBeInTheDocument();
   });
+
+  test("should return error message when login fail", async () => {
+    var component  = render(
+    
+        <Provider store={store}>
+          <Router>
+          <Fragment>
+            <Login />
+        </Fragment>
+            </Router>
+          </Provider>
+    );
+  
+    var username = component.getByTestId('username');
+        fireEvent.change(username.querySelector('input'), { target: { value: 'sarahedo' } });
+        var password = component.getByTestId('password');
+        fireEvent.change(password.querySelector('input'), { target: { value: '12' } });
+        var submitButton = component.getByTestId('submit');
+        var submitButton = component.getByTestId('submit');
+        fireEvent.click(submitButton); // Just pass the submitButton itself
+        await waitFor(() => {
+          expect(component.getByTestId('error')).toHaveTextContent("Login fail! Please check your username and password!");
+        })
+  });
+
+  test("should login successfully", async () => {
+    var component  = render(
+    
+        <Provider store={store}>
+          <Router>
+          <Fragment>
+            <Login />
+        </Fragment>
+            </Router>
+          </Provider>
+    );
+  
+    var username = component.getByTestId('username');
+        fireEvent.change(username.querySelector('input'), { target: { value: 'sarahedo' } });
+        var password = component.getByTestId('password');
+        fireEvent.change(password.querySelector('input'), { target: { value: '12' } });
+        var submitButton = component.getByTestId('submit');
+        var submitButton = component.getByTestId('submit');
+        fireEvent.click(submitButton); // Just pass the submitButton itself
+        await waitFor(() => {
+          expect(component.queryByTestId('error')).not.toBeInTheDocument();
+        })
+  });
+
+})
+

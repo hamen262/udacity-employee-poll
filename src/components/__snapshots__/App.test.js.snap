@@ -19,6 +19,7 @@ exports[`render first look of login page 1`] = `
         >
           <div
             class="ant-row ant-form-item-row css-dev-only-do-not-override-11xg00t"
+            data-testid="username"
           >
             <div
               class="ant-col ant-form-item-label css-dev-only-do-not-override-11xg00t"
@@ -57,6 +58,7 @@ exports[`render first look of login page 1`] = `
         >
           <div
             class="ant-row ant-form-item-row css-dev-only-do-not-override-11xg00t"
+            data-testid="password"
           >
             <div
               class="ant-col ant-form-item-label css-dev-only-do-not-override-11xg00t"
@@ -138,6 +140,7 @@ exports[`render first look of login page 1`] = `
                 >
                   <button
                     class="ant-btn css-dev-only-do-not-override-11xg00t ant-btn-primary"
+                    data-testid="submit"
                     type="submit"
                   >
                     <span>
